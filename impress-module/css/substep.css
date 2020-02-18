@@ -1,0 +1,2 @@
+.substep { opacity: 0; }
+.substep.substep-visible { opacity: 1; transition: opacity 1s; }

@@ -1,0 +1,297 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Bringing predictive models to production | by Danu Pranantha @danu.pranantha@gmail.com</title>
+
+    <meta name="description" content="Bringing predictive models to production" />
+    <meta name="author" content="Danu Pranantha" />
+    <link rel="stylesheet" href="../../impress-module/extras/highlight/styles/github.css">
+
+
+    <!--
+        Styles specific for this example presentation.
+    -->
+    <link href="../../impress-module/css/markdown-slides.css" rel="stylesheet" />
+    <link href="../../impress-module/css/devopsy.css" rel="stylesheet" />
+    <link href="../../impress-module/css/effects.css" rel="stylesheet" />
+    <link href="../../impress-module/css/substep.css" rel="stylesheet" />
+
+</head>
+
+<body class="impress-not-supported">
+<div class="fallback-message">
+    <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+    <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+</div>
+
+<div id="impress" data-transition-duration="1000">
+
+<div id="1" class="step slide markdown title" data-rel-x="0" data-rel-y="0">
+# Bringing predictive models to production: lesson learned!
+## Danu Pranantha
+### Team 2a
+</div>
+
+<div id="2" class="step slide markdown" data-rel-x="0" data-rel-y="1000">
+# Objectives
+## Share **lessons learned** when we brought our model to production
+
+-----
+# Disclaimer
+
+* Speaker is **NOT** a data scientist
+* Speaker is **NEITHER** an IT architect **NOR** a software architect
+
+</div>
+
+<div id="3" class="step slide" data-rel-x="0" data-rel-y="1000">
+    <h1>This talk is NOT about</h1>
+    <ul>
+        <li><strike>Machine learning (ML) algorithms</strike></li>
+        <li><strike>Deep learning and tensorflow</strike></li>
+        <li><strike>Techniques/tools in data science</strike></li>
+        <li><strike>Cloud architecture for machine learning</strike></li>
+    </ul>
+</div>
+
+<div id="4" class="step slide markdown" data-rel-x="0" data-rel-y="1000">
+# This talk is about
+## Some of things you might need to consider if you wanna bring your model to production
+######* based on our experiences
+</div>
+
+<div id="5" class="step slide markdown" data-rel-x="1000" data-rel-y="0" data-rotate="90" data-y="5000">
+# Intro
+## Our core competence
+
+* Personalization
+* Customer behaviour
+
+![Personalization](images/personalization.png)
+![Browse](images/browse.png)
+![Search](images/search.png)
+
+-----
+# This involves
+## Data collection and/or processing
+
+* Customer visits
+* Customer characteristics
+  * Favourite shelves
+  * Next best shelves
+  * Interest in kid, pet, ...
+  * Promo lover
+  * ...
+
+-----
+# Why the talk?
+## Data science is gaining more traction within bol.com
+
+* More teams require data science within bol.com:
+    * Personalization, e.g. Team 2a
+    * Recommendation, e.g. Team Reco
+    * Advertisement and Attribution, e.g. Team SmartAds
+    * Offer, e.g. Team Best Offer
+    * ...
+
+-----
+# Why the talk?
+## Cloud allows scalable data collection
+
+* Processing
+    * Google Dataflow
+    * Google Dataproc: Hadoop, Spark/Pyspark, Flink, etc.
+    * Google Kubernetes Engine: Flink, etc.
+* Storage and messaging system
+    * Google PubSub
+    * Google BigQuery
+    * Google BigTable
+    * Google Cloud Storage
+
+-----
+# Why the talk?
+## Cloud allows scalable model training
+
+* Google Dataflow: e.g. generating favourite shelves per customer
+* Google Dataproc: e.g. mining frequent items with FPGrowth in Pyspark
+* Google Kubernetes Engine: e.g. training prioritization engine in Python
+* ...
+
+-----
+# Why the talk?
+## In short, we (will) have way more ML models and/or ML driven projects in the future
+
+> Not only Boukje is bol customer, but Boukje (intelligent) butler is bol customer
+
+*-- Boukje Taphoorn (CMO bol.com)*
+
+</div>
+
+<div id="6" class="step slide" data-rel-x="1000" data-rel-y="-1000" data-x="6000">
+    <h1>What is ML model?</h1>
+    <ul>
+        <li>Statistical models which describe data</li>
+        <li>Mathematical models which represent a real-world process</li>
+        <li>Data models which show patterns</li>
+    </ul>
+    <blockquote>"Model artifact that is created by the training process"</blockquote>
+    <p style="text-align: right"><small>- Amazon Machine Learning Dev. Guide</small></p>
+</div>
+
+<div id="7" class="step slide" data-rel-x="1000" data-rel-y="-1000" data-x="6000">
+    <h1>ML Lifecycle</h1>
+    <p class="substep"> => Hypotheses</p>
+    <p class="substep"> => Feature engineering, KPI, and data collection <i>if needed</i></p>
+    <p class="substep"> => Feature selection, model training, evaluation, and selection</p>
+    <p class="substep"> => Model deployment for inference</p>
+    <p class="substep"> => Experimentation</p>
+    <div class="notes">
+        <ul>
+            <li>Feature enginering:
+                <ul>
+                    <li>Brainstorming or testing features</li>
+                    <li>Deciding what features to create</li>
+                    <li>Creating features</li>
+                    <li>Checking how the features work with your model</li>
+                    <li>Improving your features if needed</li>
+                    <li>Go back to brainstorming/creating more features until the work is done.</li>
+                </ul>
+            <li>KPI: CTR, revenue, derivative construct?</li>
+            <li>Data collection</li>
+            <li>Feature selection: consider not all available features?</li>
+            <li>Model training:
+                <ul>
+                    <li>Model evaluation: more data, more features, different model?</li>
+                    <li>Model selection</li>
+                </ul>
+            <li>Model deployment for inference</li>
+            <li>Experiments: accept/reject null hypothesis</li>
+        </ul>
+    </div>
+</div>
+
+<div id="8" class="step slide" data-rel-x="1000" data-rel-y="-1000" data-x="6000">
+    <h1>Feature engineering, KPI, and data collection</h1>
+    <p class="substep">Lesson 1: Brainstorm with people of different roles!</p>
+    <p class="substep"><img alt="Features" src="images/features.png" style="min-height:100%;min-width:100%;"/></p>
+    <div class="notes">
+        You can list potential features, what are currently available, what are not (require additional works to gather them)
+    </div>
+</div>
+
+<div id="9" class="step slide" data-rel-x="1000" data-rel-y="-1000" data-x="6000">
+    <h1>Feature engineering, KPI, and data collection</h1>
+    <p class="substep">Lesson 2: Don't assume data are readily available!</p>
+    <p class="substep">Lesson 3: Make sure you have access to the data you need</p>
+    <div class="notes">
+        Lesson 2: Based on your list of what you know, you might need to recheck if it's the case. If data is not available, you need to ask data owner if they can extend it? Or if it is yours, then you need to extend it.
+        Also, most likely you'll need to perform data preprocessing for both training and prediction/inference
+        Lesson 3: Don't underestimate this! Sometimes it takes time and before long, you are already at half of the sprint with blocked user stories
+    </div>
+</div>
+
+<div id="10" class="step slide" data-rel-x="1000" data-rel-y="-1000" data-x="6000">
+    <h1>Feature selection, model training, evaluation, and selection</h1>
+    <p class="substep">Lesson 4: Make sure features are available for both training and prediction</p>
+    <p class="substep">Lesson 5: Make sure features are aligned for both training and prediction</p>
+    <p class="substep">Lesson 6: Promote independent yet close-knit collaboration between engineers and data scientists (Nice to Have)</p>
+    <div class="notes">
+        <ul>
+            <li>Lesson 4: Collaborate well, discuss on how to get features offline for training and online for inference, and see if it's even possible</li>
+            <li>Lesson 5: Features should have gone through the same preprocessing: same scaling, same order, etc</li>
+            <li>Lesson 6: For instance, provide abstraction on infrastructure and orchestration complexity as much as possible</li>
+        </ul>
+    </div>
+</div>
+
+<div id="11" class="step slide" data-rel-x="1000" data-rel-y="-1000" data-x="6000">
+    <h1>Model deployment for inference</h1>
+    <p class="substep"><b>Lesson 5: Make sure features are aligned for both training and prediction</b></p>
+    <p class="substep">Lesson 7: Make sure you choose performing framework for serving/inference</p>
+    <p class="substep">Lesson 8: Make sure you test thoroughly</p>
+    <p class="substep">Lesson 9: Invest on performance</p>
+    <div class="notes">
+        <ul>
+            <li>Lesson 5: Features should have gone through the same preprocessing: same scaling, same order, etc</li>
+            <li>Lesson 7: if you pickled out your model, either you transform into Java or choose scalable python Framework: FastAPI based on asyncio. Another talk about this? packaging, deps management, etc.</li>
+            <li>Lesson 8: Perform prediction/inference by using training, test, newly seen data, invalid data to see if it gives you a correct scale and behaviour.</li>
+            <li>Lesson 9: Mimic real load.</li>
+        </ul>
+    </div>
+</div>
+
+<div id="12" class="step slide" data-rel-x="1000" data-rel-y="-1000" data-x="6000">
+    <h1>Model deployment for inference</h1>
+    <p class="substep">Lesson 10: Think about fallback scenario/response if somehow model is unreachable</p>
+    <p class="substep">Lesson 11: Measure everything</p>
+    <div class="notes">
+        <ul>
+            <li>Lesson 10: This is important to identify if data you're collecting during experiment is sane</li>
+            <li>Lesson 11: Getting feedback:
+                <ul>
+                    <li>establish a request scope event identifier for each prediction and store both the features and prediction. This way you can re-evaluate your model and collate your features/prediction with other measurement e.g. slot in WSP</li>
+                    <li>track your model by tagging and propagate your tagging to your consumer also using the same identifier. Also, annotate fallback scenario, so you can distinguish them.</li>
+                    <li>if you're working with WSP: look at m2 schema and see if you can add some information to m2</li>
+                </ul>
+        </ul>
+    </div>
+</div>
+
+<div id="13" class="step slide" data-rel-x="1000" data-rel-y="-1000" data-x="6000">
+    <h1>Example of measurement</h1>
+    <img alt="Satori JSON" src="images/json%20satori.png" style="min-width:30%;" class="left"/>
+    <img alt="WSP Satori Slot" src="images/slot%20wsp.png"  style="min-width:50%;" class="right"/>
+</div>
+
+<div id="14" class="step slide" data-rel-x="1000" data-rel-y="-1000" data-x="6000">
+    <h1>Example of measurement</h1>
+    <img alt="Prediction OCTO" src="images/Prediction.png" style="min-width:90%;"/>
+    <img alt="Satori M2" src="images/Satori.png" style="min-width:90%;"/>
+</div>
+
+<div id="15" class="step slide" data-rel-x="1000" data-rel-y="-1000" data-x="6000">
+    <h1>Experiments</h1>
+    <p>You run it, you measure it, you conclude it, and ...</p>
+    <p class="substep">Lesson 12: Make sure everything is reproducible and repeatable</p>
+</div>
+
+<div id="16" class="step slide markdown" data-rel-x="1000" data-rel-y="-1000" data-x="6000">
+#In short
+1. Plan ahead with data and features for training and prediction
+2. Test thoroughly on data-set and system performance
+3. Measure everything
+4. Have fun
+5. Repeat
+</div>
+
+<div id="100" class="step slide markdown" data-rel-x="-1000" data-rel-y="-1000" data-x="6000">
+# Thank you
+</div>
+
+</div>
+
+<div id="impress-toolbar"></div>
+<div id="impress-help"></div>
+
+
+<!-- Extra modules
+     Load highlight.js, mermaid.js and markdown.js from extras.
+     See also src/plugins/extras/extras.js -->
+<script type="text/javascript" src="../../impress-module/extras/highlight/highlight.pack.js"></script>
+<script type="text/javascript" src="../../impress-module/extras/mermaid/mermaid.min.js"></script>
+<script type="text/javascript" src="../../impress-module/extras/markdown/markdown.js"></script>
+
+<!--
+    To make all described above really work, you need to include impress.js in the page.
+    You also need to call a `impress().init()` function to initialize impress.js presentation.
+    And you should do it in the end of your document.
+-->
+<script type="text/javascript" src="../../impress-module/js/plugins/substep/substep.js"></script>
+<script type="text/javascript" src="../../impress-module/js/impress.js"></script>
+<script>
+    impress().init();
+</script>
+</body>
+</html>
